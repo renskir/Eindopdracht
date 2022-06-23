@@ -1,11 +1,11 @@
 # Verslag eindopdracht SET
 
-# Achtergrond
+## Achtergrond
 
-# Het ontwerp van het algoritme en de complexiteit
+## Het ontwerp van het algoritme en de complexiteit
 
-# Implementatie en gebruik van de code
+## Implementatie en gebruik van de code
 
-# Conclusies en discussie
+## Conclusies en discussie
 
-# Taakverdeling
+## Taakverdeling

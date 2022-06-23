@@ -47,6 +47,12 @@ class SETkaart:
 
 class SET:
     def __init__(self):
+        '''
+        De klasse SET creëert het spelletje SET door alle mogelijke kaarten te
+        genereren, deze stapel kaarten te schudden, en twaalf kaarten op tafel
+        te leggen. 
+        '''
+        
         self.setkaarten = [SETkaart(i, j, k, l) for i in range(3) for j in range(3)
                            for k in range(3) for l in range(3)]
 
@@ -55,33 +61,51 @@ class SET:
         self.setstapel = self.setkaarten[12:]
 
     def nieuwe_kaarten_set_gevonden(self, a, b, c):
+        '''
+        :param a: de eerste kaart die bij een set hoort
+        :param b: de tweede kaart die bij een set hoort
+        :param c: de derde kaart die bij een set hoort
+
+        Deze functie vervangt drie kaarten in de gevonden set
+        door drie nieuwe kaarten van de stapel, als er nog kaarten
+        op de stapel liggen. Anders worden de kaarten weggehaald.
+        '''
         if len(self.setstapel) == 0:
             self.settafel[self.settafel.index(a)], \
             self.settafel[self.settafel.index(b)], \
             self.settafel[self.settafel.index(c)] = None, None, None
         else:
-            # leg ze op tafel
+            # leg de kaarten op tafel
             self.settafel[self.settafel.index(a)], \
             self.settafel[self.settafel.index(b)], \
             self.settafel[self.settafel.index(c)] = self.setstapel[:3]
 
-            # haal ze van de stapel
+            # haal de kaarten van de stapel
             self.setstapel = self.setstapel[3:]
 
     def nieuwe_kaarten_geen_set_gevonden(self):
+        '''
+        Als er geen kaarten zijn gevonden door de computer, worden
+        de bovenste drie kaarten vervangen door drie nieuwe kaarten
+        van de stapel, als er nog kaarten op de stapel liggen, anders
+        is het spel afgelopen.
+        '''
         if len(self.setstapel) == 0:
             return True
         else:
-            # leg ze op tafel
+            # leg de kaarten op tafel
             self.settafel[0], \
             self.settafel[1], \
             self.settafel[2] = self.setstapel[:3]
 
-            # haal ze van de stapel
+            # haal de kaarten van de stapel
             self.setstapel = self.setstapel[3:]
             return False
 
     def vind_set(self):
+        '''
+        Deze functie zoekt een set uit de kaarten die op tafel liggen.
+        '''
         for comb in combinations(self.settafel, 3):
             if self.compare(*comb):
                 return comb
@@ -89,6 +113,10 @@ class SET:
             return None
 
     def vind_alle_sets(self):
+        '''
+        Deze functie zoekt alle mogelijke sets uit
+        de kaarten die op tafel liggen.
+        '''
         sets = []
         for comb in combinations(self.settafel, 3):
             if self.compare(*comb):
@@ -97,23 +125,17 @@ class SET:
 
     @staticmethod
     def compare(a, b, c):
+        '''
+        :param a: de eerste kaart die bij een mogelijke set hoort
+        :param b: de tweede kaart die bij een mogelijke set hoort
+        :param c: de derde kaart die bij een mogelijke set hoort
+
+        Deze functie bekijkt van drie kaarten of deze een set vormen.     
+        '''
         if a is None or b is None or c is None:
             return False
         else:
             return (np.remainder(a.vector + b.vector + c.vector, 3) == 0).all()
 
 
-
-
-#infinite loop
-#timer is afgelopen:
-    # bestaat er een set?
-        #nieuwe_kaarten_set_gevonden(set) EN score_computer += 1
-        #nieuwe_kaarten_geen_set_gevonden
-#je klikt op het scherm
-    # welke heb je aangeklikt?
-    # stop in een kaarten ALS NOG NIET IN DE LIJST (anders doen we weg uit lijst halen)
-    # kaarten LENGTE 3?
-        # check of lijst een set is -> score_player += 1, kaarten = set(), timer = 0, kaarten aanvullen
-# teken kaarten, inclusief teken highlights
 

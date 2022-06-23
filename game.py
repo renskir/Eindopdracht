@@ -3,60 +3,80 @@ import pygame
 import time
 
 
-set = SET()
-klaar = False
-klaar2 = False
-score_computer, score_player = 0, 0
 
-SIZE = (100, 200)
-WINDOW_SIZE = (SIZE[0]*4, SIZE[1]*3)
-vierkanten = [(j*SIZE[0], i*SIZE[1]) for i in range(3) for j in range(4)]
-tijd_om_set_te_vinden = 30 #TIJD IN SECONDEN
-kaarten = list() # DIT IS DE LIJST MET KAARTEN WAARMEE JE EEN SET PROBEERT TE MAKEN
+set_spelletje = SET()  # maakt het spelletje set aan
+klaar = False  # houdt bij of het spelletje is afgelopen
+afsgesloten = False  # houdt bij of het spelletje is afgesloten
+score_computer, score_speler = 0, 0  # houdt de scores bij
 
+
+SIZE = (100, 200) # geeft de grootte van de kaarten aan
+WINDOW_SIZE = (SIZE[0]*4, SIZE[1]*3)  # geeft de grootte van het scherm aan
+vierkanten = [(j*SIZE[0], i*SIZE[1]) for i in range(3) for j in range(4)] # geeft alle linkerbovenhoeken van de kaarten
+tijd_om_set_te_vinden = 30  # tijd in seconden
+kaarten = list()  # dit is de lijst met de kaarten die een set zouden moeten vormen
+
+# maakt het scherm aan in pygame
 pygame.init()
 pygame.display.set_caption('SET')
 screen = pygame.display.set_mode(WINDOW_SIZE)
 
+# houdt bij hoelang het duurt om een set te vinden
 start_time = time.time()
-while not klaar2:
+
+while not afgesloten:
+    # kijkt of het langer heeft geduurd om een set te vinden dan de maximaal gegeven tijd
     if time.time() - start_time > tijd_om_set_te_vinden:
+        # deselecteert de geselecteerde kaarten
         kaarten = list()
-        alle_sets = set.vind_alle_sets()
-        if len(alle_sets) > 0:
-            set.nieuwe_kaarten_set_gevonden(*alle_sets[0])
+        # zoekt alle sets
+        # als er sets zijn, dan wordt de eerste set vervangen en krijgt de computer een punt
+        # als er geen sets zijn, worden de eerste drie kaarten vervangen
+        alle_sets = set_spelletje.vind_alle_sets()
+        if len(alle_sets) > 0: 
+            set_spelletje.nieuwe_kaarten_set_gevonden(*alle_sets[0])
             score_computer += 1
         else:
-            klaar = set.nieuwe_kaarten_geen_set_gevonden()
+            klaar = set_spelletje.nieuwe_kaarten_geen_set_gevonden()
         start_time = time.time()
 
+    # zolang het spelletje nog niet is afgelopen
     if not klaar:
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                klaar2 = True
+                afgesloten = True
+
+            # als er op een kaart is geklikt, wordt er gekeken welke kaart dit was en wordt deze kaart geselecteerd
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for i, vierkant in enumerate(vierkanten):
                     if vierkant[0] <= event.pos[0] < vierkant[0]+SIZE[0] and vierkant[1] <= event.pos[1] < vierkant[1]+SIZE[1]:
-                        if set.settafel[i] not in kaarten:
-                            kaarten.append(set.settafel[i])
+                        if set_spelletje.settafel[i] not in kaarten:
+                            kaarten.append(set_spelletje.settafel[i])
+
+                            # als er drie kaarten zijn geselecteerd wordt er gekeken of deze een set vormen
                             if len(kaarten) == 3:
-                                if set.compare(*kaarten):
-                                    score_player += 1
-                                    set.nieuwe_kaarten_set_gevonden(*kaarten)
+                                if set_spelletje.compare(*kaarten):
+                                    # de set wordt vervangen en de speler krijgt een punt
+                                    score_speler += 1
+                                    set_spelletje.nieuwe_kaarten_set_gevonden(*kaarten)
                                     start_time = time.time()
                                 kaarten = list()
                         else:
-                            kaarten.remove(set.settafel[i])
+                            # de kaart wordt gedeselecteerd als deze al geselecteerd was
+                            kaarten.remove(set_spelletje.settafel[i])
+
+    # als het spelletje is afgelopen, staat er wie er gewonnen heeft, en is er de mogelijkheid om opnieuw te spelen
     if klaar:
         screen.fill((0,0,0))
-        if score_computer > score_player:
+        if score_computer > score_speler:
             winst1 = 'De computer heeft gewonnen... :('
-        elif score_player > score_computer:
+        elif score_speler > score_computer:
             winst1 = 'Jij hebt gewonnen! :)'
         else:
             winst1 = 'Gelijkspel! :/'
 
-        winst2 =  'Computer: ' + str(score_computer) + '     Jij: ' + str(score_player)
+        winst2 =  'Computer: ' + str(score_computer) + '     Jij: ' + str(score_speler)
         winst3 = 'Klik om opnieuw te spelen!'
 
         font = pygame.font.Font('freesansbold.ttf', 20)
@@ -75,19 +95,20 @@ while not klaar2:
         textRect3.center = (WINDOW_SIZE[0] // 2, WINDOW_SIZE[1] // 2 + 20)
         screen.blit(text3, textRect3)
 
+        # als er geklikt wordt op het scherm wordt er opnieuw gespeeld
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                klaar2 = True
+                afgesloten = True
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 klaar = False
-                set = SET()
-                score_computer, score_player = 0, 0
+                set_spelletje = SET()
+                score_computer, score_speler = 0, 0
     else:
-        # TEKEN NIEUW SCHERM
+        # als het spelletje nog niet klaar is, worden de kaarten op het scherm getekend
         screen.fill((0, 0, 0))
-        for i in range(len(set.settafel)):
-            if set.settafel[i] is not None:
-                image = pygame.image.load(str(set.settafel[i]))
+        for i in range(len(set_spelletje.settafel)):
+            if set_spelletje.settafel[i] is not None:
+                image = pygame.image.load(str(set_spelletje.settafel[i]))
                 screen.blit(image, vierkanten[i])
 
         for i in range(0, WINDOW_SIZE[0], SIZE[0]):
@@ -96,7 +117,8 @@ while not klaar2:
             pygame.draw.line(screen, (0,0,0), (0, j), (WINDOW_SIZE[0], j), 1)
 
         for kaart in kaarten:
-            plek = vierkanten[set.settafel.index(kaart)]
+            plek = vierkanten[set_spelletje.settafel.index(kaart)]
             pygame.draw.circle(screen, (85, 107, 217), (plek[0]+15, plek[1]+15), 10)
 
     pygame.display.flip()
+
