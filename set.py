@@ -64,7 +64,7 @@ class Set:
         self.score_speler = 0
 
         self.afgelopen = False
-        self.tijd_om_set_te_vinden = 30
+        self.tijd_om_set_te_vinden = 0.1
 
     def nieuwe_kaarten_set_gevonden(self, a, b, c):
         '''

@@ -19,23 +19,22 @@ screen = pygame.display.set_mode(WINDOW_SIZE)
 start_time = time.time()
 
 while not afgesloten:
-    # kijkt of het langer heeft geduurd om een set te vinden dan de maximaal gegeven tijd
-    if time.time() - start_time > set_spelletje.tijd_om_set_te_vinden:
-        # deselecteert de geselecteerde kaarten
-        kaarten = list()
-        # zoekt alle sets
-        # als er sets zijn, dan wordt de eerste set vervangen en krijgt de computer een punt
-        # als er geen sets zijn, worden de eerste drie kaarten vervangen
-        alle_sets = set_spelletje.vind_alle_sets()
-        if len(alle_sets) > 0: 
-            set_spelletje.nieuwe_kaarten_set_gevonden(*alle_sets[0])
-            set_spelletje.score_computer += 1
-        else:
-            set_spelletje.nieuwe_kaarten_geen_set_gevonden()
-        start_time = time.time()
-
     # zolang het spelletje nog niet is afgelopen
     if not set_spelletje.afgelopen:
+        # kijkt of het langer heeft geduurd om een set te vinden dan de maximaal gegeven tijd
+        if time.time() - start_time > set_spelletje.tijd_om_set_te_vinden:
+            # deselecteert de geselecteerde kaarten
+            kaarten = list()
+            # zoekt alle sets
+            # als er sets zijn, dan wordt de eerste set vervangen en krijgt de computer een punt
+            # als er geen sets zijn, worden de eerste drie kaarten vervangen
+            alle_sets = set_spelletje.vind_alle_sets()
+            if len(alle_sets) > 0:
+                set_spelletje.nieuwe_kaarten_set_gevonden(*alle_sets[0])
+                set_spelletje.score_computer += 1
+            else:
+                set_spelletje.nieuwe_kaarten_geen_set_gevonden()
+            start_time = time.time()
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
