@@ -1,4 +1,15 @@
 # Eindopdracht SET
+
+## Achtergrond bij Set
+Set is een kaartspelletje waarin er 12 kaarten uit een stapel van 81 op tafel liggen. De spelers moeten tegelijk proberen een set te zoeken in de kaarten op tafel. Als iemand een set gevonden heeft roept deze speler ‘Set!’ en dan mag de speler de set weghalen en vervangen met nieuwe kaarten van de stapel. Degene die aan het einde van het spel de meeste sets gevonden heeft wint het spel. Maar wat is dan een set?
+Elke kaart heeft 4 attributen: een aantal tekens (1, 2 of 3), de vorm van al deze tekens (ruit, ovaal of golfje), de kleur van al deze tekens (groen, rood of paars) en de vulling van al deze tekens (leeg, gestreept of gevuld). Een set is een drietal kaarten waarvoor per attribuut geldt dat deze of bij alle drie de kaarten hetzelfde zijn, of bij alle drie anders.
+Voorbeeld 1: een kaart met een rode gevulde ruit, een kaart met twee groene gestreepte ruiten en een kaart met drie paarse lege ruiten vormen een set, want alle attributen zijn bij alle kaarten verschillend, behalve de vorm. Deze is bij alle kaarten hetzelfde (een ruit).
+Voorbeeld 2: een kaart met een paarse lege ovaal, een kaart met een groene gevulde ovaal en een kaart met een rode lege ovaal vormen geen set, want twee kaarten hebben lege tekens, en één een gevulde, dus ze zijn niet alle drie hetzelfde of alle drie anders.
+
+## Vraagstelling
+Voor deze eindopdracht werd ons gevraagd een variant van het spel Set te maken waarbij een speler tegen de computer speelt. In dit spel komen er net als in het originele Set 12 kaarten op het scherm tevoorschijn. De speler krijgt een vaste tijd (wij hebben voor 30 seconden gekozen) om een set (volgens dezelfde definitie voor set als in het originele Set) te vinden in deze 12 kaarten. Als dit lukt krijgt de speler een punt en worden de drie kaarten van de set vervangen. Als dit niet lukt gaat de computer checken of er eigenlijk wel een set is. Zo ja, dan krijgt de computer een punt en worden de drie kaarten van de set ook vervangen. Zo nee, dan krijgt niemand een punt en worden de eerste drie kaarten van de 12 op het scherm vervangen. Hierna begint het spel opnieuw. Wij hebben besloten door te gaan totdat alle 81 kaarten op zijn, waarna er wordt gekeken wie de meeste punten heeft: de speler of de computer.
+
+
 ## Toelichting bij de code
 In het bestand set.py staan twee klassen, namelijk de klasse SetKaart en Set. De klasse SetKaart weergeeft een kaart in
 het spelletje Set, zowel als numpy array en als tekst, om later de gegeven afbeeldingen makkelijk terug te kunnen vinden, 
