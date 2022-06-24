@@ -45,7 +45,7 @@ class SETkaart:
         return 'kaarten/' + self.kleur + self.vorm + self.dichtheid + self.aantal + '.gif'
 
 
-class SET:
+class Set:
     def __init__(self):
         '''
         De klasse SET creëert het spelletje SET door alle mogelijke kaarten te
@@ -59,6 +59,8 @@ class SET:
         shuffle(self.setkaarten)
         self.settafel = self.setkaarten[:12]
         self.setstapel = self.setkaarten[12:]
+        self.score_computer = 0
+        self.score_speler = 0
 
     def nieuwe_kaarten_set_gevonden(self, a, b, c):
         '''
@@ -66,7 +68,7 @@ class SET:
         :param b: de tweede kaart die bij een set hoort
         :param c: de derde kaart die bij een set hoort
 
-        Deze functie vervangt drie kaarten in de gevonden set
+        Deze methode vervangt drie kaarten in de gevonden set
         door drie nieuwe kaarten van de stapel, als er nog kaarten
         op de stapel liggen. Anders worden de kaarten weggehaald.
         '''
@@ -104,7 +106,7 @@ class SET:
 
     def vind_set(self):
         '''
-        Deze functie zoekt een set uit de kaarten die op tafel liggen.
+        Deze methode zoekt een set uit de kaarten die op tafel liggen.
         '''
         for comb in combinations(self.settafel, 3):
             if self.compare(*comb):
@@ -114,7 +116,7 @@ class SET:
 
     def vind_alle_sets(self):
         '''
-        Deze functie zoekt alle mogelijke sets uit
+        Deze methode zoekt alle mogelijke sets uit
         de kaarten die op tafel liggen.
         '''
         sets = []
@@ -130,7 +132,7 @@ class SET:
         :param b: de tweede kaart die bij een mogelijke set hoort
         :param c: de derde kaart die bij een mogelijke set hoort
 
-        Deze functie bekijkt van drie kaarten of deze een set vormen.     
+        Deze methode bekijkt van drie kaarten of deze een set vormen.
         '''
         if a is None or b is None or c is None:
             return False

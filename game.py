@@ -1,14 +1,12 @@
-from klasse import SET
+from set import Set
 import pygame
 import time
 
 
 
-set_spelletje = SET()  # maakt het spelletje set aan
+set_spelletje = Set()  # maakt het spelletje set aan
 klaar = False  # houdt bij of het spelletje is afgelopen
 afgesloten = False  # houdt bij of het spelletje is afgesloten
-score_computer, score_speler = 0, 0  # houdt de scores bij
-
 
 SIZE = (100, 200) # geeft de grootte van de kaarten aan
 WINDOW_SIZE = (SIZE[0]*4, SIZE[1]*3)  # geeft de grootte van het scherm aan
@@ -35,7 +33,7 @@ while not afgesloten:
         alle_sets = set_spelletje.vind_alle_sets()
         if len(alle_sets) > 0: 
             set_spelletje.nieuwe_kaarten_set_gevonden(*alle_sets[0])
-            score_computer += 1
+            set_spelletje.score_computer += 1
         else:
             klaar = set_spelletje.nieuwe_kaarten_geen_set_gevonden()
         start_time = time.time()
@@ -58,7 +56,7 @@ while not afgesloten:
                             if len(kaarten) == 3:
                                 if set_spelletje.compare(*kaarten):
                                     # de set wordt vervangen en de speler krijgt een punt
-                                    score_speler += 1
+                                    set_spelletje.score_speler += 1
                                     set_spelletje.nieuwe_kaarten_set_gevonden(*kaarten)
                                     start_time = time.time()
                                 kaarten = list()
@@ -69,14 +67,14 @@ while not afgesloten:
     # als het spelletje is afgelopen, staat er wie er gewonnen heeft, en is er de mogelijkheid om opnieuw te spelen
     if klaar:
         screen.fill((0,0,0))
-        if score_computer > score_speler:
+        if set_spelletje.score_computer > set_spelletje.score_speler:
             winst1 = 'De computer heeft gewonnen... :('
-        elif score_speler > score_computer:
+        elif set_spelletje.score_speler > set_spelletje.score_computer:
             winst1 = 'Jij hebt gewonnen! :)'
         else:
             winst1 = 'Gelijkspel! :/'
 
-        winst2 =  'Computer: ' + str(score_computer) + '     Jij: ' + str(score_speler)
+        winst2 =  'Computer: ' + str(set_spelletje.score_computer) + '     Jij: ' + str(set_spelletje.score_speler)
         winst3 = 'Klik om opnieuw te spelen!'
 
         font = pygame.font.Font('freesansbold.ttf', 20)
@@ -101,8 +99,7 @@ while not afgesloten:
                 afgesloten = True
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 klaar = False
-                set_spelletje = SET()
-                score_computer, score_speler = 0, 0
+                set_spelletje = Set()
     else:
         # als het spelletje nog niet klaar is, worden de kaarten op het scherm getekend
         screen.fill((0, 0, 0))
