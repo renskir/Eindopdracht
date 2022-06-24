@@ -6,7 +6,7 @@ import time
 
 set_spelletje = SET()  # maakt het spelletje set aan
 klaar = False  # houdt bij of het spelletje is afgelopen
-afsgesloten = False  # houdt bij of het spelletje is afgesloten
+afgesloten = False  # houdt bij of het spelletje is afgesloten
 score_computer, score_speler = 0, 0  # houdt de scores bij
 
 
