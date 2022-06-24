@@ -59,8 +59,12 @@ class Set:
         shuffle(self.setkaarten)
         self.settafel = self.setkaarten[:12]
         self.setstapel = self.setkaarten[12:]
+
         self.score_computer = 0
         self.score_speler = 0
+
+        self.afgelopen = False
+        self.tijd_om_set_te_vinden = 30
 
     def nieuwe_kaarten_set_gevonden(self, a, b, c):
         '''
@@ -93,7 +97,7 @@ class Set:
         is het spel afgelopen.
         '''
         if len(self.setstapel) == 0:
-            return True
+            self.afgelopen = True
         else:
             # leg de kaarten op tafel
             self.settafel[0], \

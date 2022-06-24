@@ -2,16 +2,12 @@ from set import Set
 import pygame
 import time
 
-
-
 set_spelletje = Set()  # maakt het spelletje set aan
-klaar = False  # houdt bij of het spelletje is afgelopen
 afgesloten = False  # houdt bij of het spelletje is afgesloten
 
 SIZE = (100, 200) # geeft de grootte van de kaarten aan
 WINDOW_SIZE = (SIZE[0]*4, SIZE[1]*3)  # geeft de grootte van het scherm aan
 vierkanten = [(j*SIZE[0], i*SIZE[1]) for i in range(3) for j in range(4)] # geeft alle linkerbovenhoeken van de kaarten
-tijd_om_set_te_vinden = 30  # tijd in seconden
 kaarten = list()  # dit is de lijst met de kaarten die een set zouden moeten vormen
 
 # maakt het scherm aan in pygame
@@ -24,7 +20,7 @@ start_time = time.time()
 
 while not afgesloten:
     # kijkt of het langer heeft geduurd om een set te vinden dan de maximaal gegeven tijd
-    if time.time() - start_time > tijd_om_set_te_vinden:
+    if time.time() - start_time > set_spelletje.tijd_om_set_te_vinden:
         # deselecteert de geselecteerde kaarten
         kaarten = list()
         # zoekt alle sets
@@ -35,11 +31,11 @@ while not afgesloten:
             set_spelletje.nieuwe_kaarten_set_gevonden(*alle_sets[0])
             set_spelletje.score_computer += 1
         else:
-            klaar = set_spelletje.nieuwe_kaarten_geen_set_gevonden()
+            set_spelletje.nieuwe_kaarten_geen_set_gevonden()
         start_time = time.time()
 
     # zolang het spelletje nog niet is afgelopen
-    if not klaar:
+    if not set_spelletje.afgelopen:
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -65,7 +61,7 @@ while not afgesloten:
                             kaarten.remove(set_spelletje.settafel[i])
 
     # als het spelletje is afgelopen, staat er wie er gewonnen heeft, en is er de mogelijkheid om opnieuw te spelen
-    if klaar:
+    if set_spelletje.afgelopen:
         screen.fill((0,0,0))
         if set_spelletje.score_computer > set_spelletje.score_speler:
             winst1 = 'De computer heeft gewonnen... :('
@@ -98,10 +94,9 @@ while not afgesloten:
             if event.type == pygame.QUIT:
                 afgesloten = True
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                klaar = False
                 set_spelletje = Set()
     else:
-        # als het spelletje nog niet klaar is, worden de kaarten op het scherm getekend
+        # als het spelletje nog niet afgelopen is, worden de kaarten op het scherm getekend
         screen.fill((0, 0, 0))
         for i in range(len(set_spelletje.settafel)):
             if set_spelletje.settafel[i] is not None:
